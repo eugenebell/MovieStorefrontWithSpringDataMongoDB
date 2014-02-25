@@ -7,9 +7,9 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-	<context:component-scan base-package="com.cit.eugene.service.dao" />
+	<context:component-scan base-package="com.eugene.service.dao" />
 	<context:property-placeholder location="classpath:./mongodb.properties" ignore-unresolvable="true" />
-	<mongo:repositories base-package="com.cit.eugene.service.dao" />
+	<mongo:repositories base-package="com.eugene.service.dao" />
 
 	<mongo:db-factory host="${mongodb.host}" port="${mongodb.port}"
 		dbname="${mongodb.db}" username="${mongodb.username}" password="${mongodb.password}" />

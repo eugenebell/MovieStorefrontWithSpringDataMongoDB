@@ -12,8 +12,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.cit.eugene.model.Genre;
-import com.cit.eugene.service.dao.GenreRepository;
+import com.eugene.model.Genre;
+import com.eugene.service.business.GenreServiceImpl;
+import com.eugene.service.dao.GenreRepository;
 
 public class GenreServiceImplTest {
 
@@ -24,13 +25,12 @@ public class GenreServiceImplTest {
 	public void setUp() throws Exception {
 		genreRepository = createMock(GenreRepository.class);
 		genreManagerImpl = new GenreServiceImpl();
-		genreManagerImpl.init();
 		genreManagerImpl.setGenreRepository(genreRepository);
 	}
 	
 	@After
 	public void tearDown() {
-		genreManagerImpl.destroy();
+		
 	}
 
 	@Test

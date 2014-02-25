@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.cit.eugene.model.Movie;
+import com.eugene.model.Movie;
+import com.eugene.service.dao.GenreRepository;
+import com.eugene.service.dao.MovieRepository;
 
 @ContextConfiguration("file:src/test/resources/test-context.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -31,19 +33,19 @@ public class MovieDAOTest {
 	@Test
 	public void testGetMovieListingByGenreID() {
 		
-		List<Movie> l1  = movieRepository.findByGenreID(2l);
+		List<Movie> l1  = movieRepository.findByGenresGenreID("2");
 		assertEquals(11, l1.size());
-		List<Movie> l2  = movieRepository.findByGenreID(5l);
+		List<Movie> l2  = movieRepository.findByGenresGenreID("5");
 		assertEquals(5, l2.size());
-		List<Movie> l3  = movieRepository.findByGenreID(6l);
+		List<Movie> l3  = movieRepository.findByGenresGenreID("6");
 		assertEquals(15, l3.size());
-		List<Movie> l4  = movieRepository.findByGenreID(9l);
+		List<Movie> l4  = movieRepository.findByGenresGenreID("9");
 		assertEquals(3, l4.size());
 	}
 
 	@Test
 	public void testGetMovieByID() {
-		Movie m = movieRepository.findByMovieID(1l);
+		Movie m = movieRepository.findByMovieID("1");
 		assertNotNull(m);
 		assertEquals("13 Assassins", m.getTitle());
 		assertEquals("13_Assassins.jpg", m.getPosterFileName());

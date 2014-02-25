@@ -14,9 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.cit.eugene.model.Authorities;
-import com.cit.eugene.model.User;
-import com.cit.eugene.model.VideoStoreMember;
+import com.eugene.model.Authorities;
+import com.eugene.model.User;
+import com.eugene.model.VideoStoreMember;
+import com.eugene.service.dao.VideoStoreMemberRepository;
 
 @ContextConfiguration("file:src/test/resources/test-context.xml")
 @RunWith(SpringJUnit4ClassRunner.class)

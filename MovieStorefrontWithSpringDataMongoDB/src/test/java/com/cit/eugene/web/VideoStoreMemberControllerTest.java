@@ -14,11 +14,12 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.cit.eugene.model.Authorities;
-import com.cit.eugene.model.MovieReservation;
-import com.cit.eugene.model.User;
-import com.cit.eugene.model.VideoStoreMember;
-import com.cit.eugene.service.business.VideoStoreMemberService;
+import com.eugene.model.Authorities;
+import com.eugene.model.MovieReservation;
+import com.eugene.model.User;
+import com.eugene.model.VideoStoreMember;
+import com.eugene.service.business.VideoStoreMemberService;
+import com.eugene.web.VideoStoreMemberController;
 
 public class VideoStoreMemberControllerTest {
 

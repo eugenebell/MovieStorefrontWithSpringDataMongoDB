@@ -15,14 +15,15 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.cit.eugene.model.Account;
-import com.cit.eugene.model.Movie;
-import com.cit.eugene.model.MovieReservation;
-import com.cit.eugene.model.User;
-import com.cit.eugene.model.VideoStoreMember;
-import com.cit.eugene.service.dao.MovieRepository;
-import com.cit.eugene.service.dao.MovieReservationRepository;
-import com.cit.eugene.service.dao.VideoStoreMemberRepository;
+import com.eugene.model.Account;
+import com.eugene.model.Movie;
+import com.eugene.model.MovieReservation;
+import com.eugene.model.User;
+import com.eugene.model.VideoStoreMember;
+import com.eugene.service.business.VideoStoreMemberServiceImpl;
+import com.eugene.service.dao.MovieRepository;
+import com.eugene.service.dao.MovieReservationRepository;
+import com.eugene.service.dao.VideoStoreMemberRepository;
 
 public class VideoStoreMemberServiceImplTest {
 
@@ -39,7 +40,6 @@ public class VideoStoreMemberServiceImplTest {
 		movieDAORepository = createMock(MovieRepository.class);
 		movieReservationRepository = createMock(MovieReservationRepository.class);
 		movieManagerImpl = new VideoStoreMemberServiceImpl();
-		movieManagerImpl.init();
 		movieManagerImpl.setMovieRepository(movieDAORepository);	
 		movieManagerImpl.setVideoStoreMemberRepository(videoStoreMemberRepository);
 		movieManagerImpl.setMovieReservationRepository(movieReservationRepository);
@@ -57,7 +57,6 @@ public class VideoStoreMemberServiceImplTest {
 		m.setYear(1999);
 		Account a = new Account();
 		a.setTotal(1.00);
-		a.setAccountID("3");
 		vsm.setAccount(a);
 		vsm.setMemebershipNumber("sdhu");
 		vsm.setName("bob");
@@ -75,7 +74,7 @@ public class VideoStoreMemberServiceImplTest {
 	
 	@After
 	public void tearDown() {
-		movieManagerImpl.destroy();
+
 	}
 	
 	@Test
@@ -183,7 +182,6 @@ public class VideoStoreMemberServiceImplTest {
 		assertEquals("sdhu", expected.getMemebershipNumber());		
 		assertNotNull(expected.getAccount());
 		assertEquals(Double.valueOf(1.00), expected.getAccount().getTotal());
-		assertEquals("3", expected.getAccount().getAccountID());
 		verify(videoStoreMemberRepository);
 	}
 

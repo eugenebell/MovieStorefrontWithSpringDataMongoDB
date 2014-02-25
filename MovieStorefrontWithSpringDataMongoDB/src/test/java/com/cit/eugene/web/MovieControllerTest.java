@@ -12,9 +12,10 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.cit.eugene.model.Movie;
-import com.cit.eugene.service.business.GenreService;
-import com.cit.eugene.service.business.MovieService;
+import com.eugene.model.Movie;
+import com.eugene.service.business.GenreService;
+import com.eugene.service.business.MovieService;
+import com.eugene.web.MovieController;
 
 public class MovieControllerTest {
 
@@ -44,9 +45,9 @@ public class MovieControllerTest {
 
 	@Test
 	public void testGetMovieListByGenre() {
-		expect(movieManager.getMovieListingByGenreID(1l)).andReturn(new ArrayList<Movie>());
+		expect(movieManager.getMovieListingByGenreID("1")).andReturn(new ArrayList<Movie>());
 		replay(movieManager);
-		List<Movie> l = movieController.getMovieListByGenre(1l);
+		List<Movie> l = movieController.getMovieListByGenre("1");
 		assertNotNull(l);
 		verify(movieManager);
 	}

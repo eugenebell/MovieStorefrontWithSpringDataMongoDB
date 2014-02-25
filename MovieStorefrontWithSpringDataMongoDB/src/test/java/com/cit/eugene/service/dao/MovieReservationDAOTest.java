@@ -12,9 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.cit.eugene.model.Movie;
-import com.cit.eugene.model.MovieReservation;
-import com.cit.eugene.model.VideoStoreMember;
+import com.eugene.model.Movie;
+import com.eugene.model.MovieReservation;
+import com.eugene.model.VideoStoreMember;
+import com.eugene.service.dao.MovieReservationRepository;
+import com.eugene.service.dao.VideoStoreMemberRepository;
 
 @ContextConfiguration("file:src/test/resources/test-context.xml")
 @RunWith(SpringJUnit4ClassRunner.class)

@@ -15,11 +15,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.cit.eugene.model.Movie;
-import com.cit.eugene.model.MovieReservation;
-import com.cit.eugene.model.VideoStoreMember;
-import com.cit.eugene.service.dao.MovieRepository;
-import com.cit.eugene.service.dao.VideoStoreMemberRepository;
+import com.eugene.model.Movie;
+import com.eugene.model.MovieReservation;
+import com.eugene.model.VideoStoreMember;
+import com.eugene.service.business.MovieServiceImpl;
+import com.eugene.service.dao.MovieRepository;
+import com.eugene.service.dao.VideoStoreMemberRepository;
 
 public class MovieServiceImplTest {
 
@@ -34,7 +35,6 @@ public class MovieServiceImplTest {
 		movieDAORepository = createMock(MovieRepository.class);
 		movieManagerImpl = new MovieServiceImpl();
 		videoStoreMemberRepository = createMock(VideoStoreMemberRepository.class);
-		movieManagerImpl.init();
 		movieManagerImpl.setMovieRepository(movieDAORepository);	
 		movieManagerImpl.setVideoStoreMemberDAO(videoStoreMemberRepository);
 		m.setMovieID("1");
@@ -64,7 +64,7 @@ public class MovieServiceImplTest {
 	
 	@After
 	public void tearDown() {
-		movieManagerImpl.destroy();
+
 	}
 
 	@Test
@@ -86,9 +86,9 @@ public class MovieServiceImplTest {
 	public void testGetMovieListingByGenreID() {
 		List<Movie> l = new ArrayList<Movie>();
 		l.add(m);
-		expect(movieDAORepository.findByGenreID(1l)).andReturn(l);
+		expect(movieDAORepository.findByGenresGenreID("1")).andReturn(l);
 		replay(movieDAORepository);
-		List<Movie> l2 = movieManagerImpl.getMovieListingByGenreID(1l);
+		List<Movie> l2 = movieManagerImpl.getMovieListingByGenreID("1");
 		assertNotNull(l2);
 		verify(movieDAORepository);
 	}
@@ -96,10 +96,10 @@ public class MovieServiceImplTest {
 	@Test
 	public void testGetMovieByID() {
 		expect(videoStoreMemberRepository.getVideoStoreMemberByName("bob")).andReturn(vsm);
-		expect(movieDAORepository.findByMovieID(1l)).andReturn(m);
+		expect(movieDAORepository.findByMovieID("1")).andReturn(m);
 		replay(videoStoreMemberRepository);
 		replay(movieDAORepository);
-		assertEquals(m, movieManagerImpl.getMovieByID("bob", 1l));
+		assertEquals(m, movieManagerImpl.getMovieByID("bob", "1"));
 		verify(movieDAORepository);
 	}
 
