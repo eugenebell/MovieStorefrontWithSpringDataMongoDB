@@ -61,6 +61,7 @@ public class VideoStoreMemberServiceImpl implements VideoStoreMemberService {
 	}
 
 	public boolean reserveMovie(String username, String movieID, boolean rented) {
+		LOG.debug("Reserve movie [" + movieID + "] for user [" + username + "]");
 		VideoStoreMember vsm = getVideoStoreMember(userRepository.findByUsername(username).getUserID());
 		MovieReservation mr = new MovieReservation();
 		mr.setRented(rented);

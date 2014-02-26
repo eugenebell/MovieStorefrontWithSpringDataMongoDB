@@ -22,6 +22,7 @@ public class GenreServiceImpl implements GenreService {
 	}
 
 	public List<Genre> getGenreListing() {
+		LOG.debug("Get all genres");
 		return genreRepository.findAll();
 	}
 	

@@ -242,6 +242,7 @@ public class InitializeMongoDB {
 			User uAdmin = new User();
 			Set<Authorities> uAuthoritieses = new HashSet<Authorities>();
 			uAuthoritieses.add(auAdmin);
+			uAuthoritieses.add(auUser);
 			uAdmin.setAuthoritieses(uAuthoritieses);
 			uAdmin.setEnabled(true);
 			uAdmin.setPassword("admin");

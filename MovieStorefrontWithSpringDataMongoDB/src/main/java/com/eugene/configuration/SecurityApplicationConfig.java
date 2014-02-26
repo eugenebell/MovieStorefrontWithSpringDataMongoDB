@@ -3,7 +3,6 @@ package com.eugene.configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,7 +16,7 @@ import com.eugene.security.MongoUserDetailsService;
 //http://docs.spring.io/autorepo/docs/spring-security/3.2.0.RC2/reference/htmlsingle/#abstractsecuritywebapplicationinitializer-with-spring-mvc
 @Configuration
 @EnableWebSecurity
-//securedEnabled=true Enables Spring security, others include JSR250 and prePost
+//securedEnabled=true Enables Spring security, others include JSR250 and prePostEnabled
 @EnableGlobalMethodSecurity(securedEnabled=true)
 public class SecurityApplicationConfig extends WebSecurityConfigurerAdapter {
 
