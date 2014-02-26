@@ -74,10 +74,10 @@ public class VideoStoreMemberController {
 		videoStoreMemberManager.cancelReservedMovie(aut.getName(), reservationID);
 	}
 
-	@RequestMapping(value = "movieListing/reservationRented/{reservationid}/memberid/{memeberid}", method = RequestMethod.POST)
+	@RequestMapping(value = "movieListing/reservationRented/{reservationid}/memberid/{movieID}", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void movieRented(@PathVariable("reservationid") String reservationID, @PathVariable("memeberid") String memberid) {
+	public void movieRented(@PathVariable("movieID") String movieID, @PathVariable("memeberid") String memberid) {
 		VideoStoreMember vsm = videoStoreMemberManager.getVideoStoreMemberByID(memberid);
-		videoStoreMemberManager.rentedMovie(vsm, reservationID);
+		videoStoreMemberManager.rentedMovie(vsm, movieID);
 	}
 }

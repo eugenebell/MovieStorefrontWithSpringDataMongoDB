@@ -22,14 +22,12 @@ import com.eugene.model.User;
 import com.eugene.model.VideoStoreMember;
 import com.eugene.service.business.VideoStoreMemberServiceImpl;
 import com.eugene.service.dao.MovieRepository;
-import com.eugene.service.dao.MovieReservationRepository;
 import com.eugene.service.dao.VideoStoreMemberRepository;
 
 public class VideoStoreMemberServiceImplTest {
 
 	private VideoStoreMemberRepository videoStoreMemberRepository = null;
 	private MovieRepository movieDAORepository = null;
-	private MovieReservationRepository movieReservationRepository = null;
 	private VideoStoreMemberServiceImpl movieManagerImpl = null;
 	private Movie m = new Movie();
 	private VideoStoreMember vsm = new VideoStoreMember();
@@ -38,11 +36,9 @@ public class VideoStoreMemberServiceImplTest {
 	public void setUp() throws Exception {
 		videoStoreMemberRepository = createMock(VideoStoreMemberRepository.class);
 		movieDAORepository = createMock(MovieRepository.class);
-		movieReservationRepository = createMock(MovieReservationRepository.class);
 		movieManagerImpl = new VideoStoreMemberServiceImpl();
 		movieManagerImpl.setMovieRepository(movieDAORepository);	
 		movieManagerImpl.setVideoStoreMemberRepository(videoStoreMemberRepository);
-		movieManagerImpl.setMovieReservationRepository(movieReservationRepository);
 		m.setMovieID("1");
 		m.setActorsDisplay("actorsDisplay");
 		m.setDirectorsDisplay("directorsDisplay");
@@ -63,9 +59,7 @@ public class VideoStoreMemberServiceImplTest {
 		vsm.setLocation("location");
 		MovieReservation mr = new MovieReservation();
 		mr.setMovie(m);
-		mr.setMemberID(vsm);
 		mr.setReservationDate(new Date());
-		mr.setMovieReservationID("22");
 		List<MovieReservation> l = new ArrayList<MovieReservation>();
 		l.add(mr);
 		vsm.setMovieReservations(l);

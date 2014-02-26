@@ -54,7 +54,6 @@ public class MovieServiceImplTest {
 		vsm.setName("bob");
 		MovieReservation mr = new MovieReservation();
 		mr.setMovie(m);
-		mr.setMemberID(vsm);
 		mr.setReservationDate(new Date());
 		List<MovieReservation> l = new ArrayList<MovieReservation>();
 		l.add(mr);
@@ -95,7 +94,7 @@ public class MovieServiceImplTest {
 
 	@Test
 	public void testGetMovieByID() {
-		expect(videoStoreMemberRepository.getVideoStoreMemberByName("bob")).andReturn(vsm);
+		expect(videoStoreMemberRepository.findByUserUserID("bob")).andReturn(vsm);
 		expect(movieDAORepository.findByMovieID("1")).andReturn(m);
 		replay(videoStoreMemberRepository);
 		replay(movieDAORepository);

@@ -67,9 +67,9 @@ public class VideoStoreMemberControllerTest {
 
 	@Test
 	public void testGetmovieReservationsForMember() {
-		expect(videoStoreMemberManager.getVideoStoreMembersReservations(2l)).andReturn(new ArrayList<MovieReservation>());
+		expect(videoStoreMemberManager.getVideoStoreMembersReservations("2")).andReturn(new ArrayList<MovieReservation>());
 		replay(videoStoreMemberManager);
-		List<MovieReservation> l = videoStoreMemberController.getmovieReservationsForMember(2l);
+		List<MovieReservation> l = videoStoreMemberController.getmovieReservationsForMember("2");
 		assertNotNull(l);
 		verify(videoStoreMemberManager);
 	}

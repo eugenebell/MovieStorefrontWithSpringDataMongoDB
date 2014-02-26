@@ -49,7 +49,7 @@ public class VideoStoreMemberDAOTest {
 
 	@Test
 	public void testGetVideoStoreMemberByID() {
-		VideoStoreMember vsm = videoStoreMemberRepository.findOne(1l);
+		VideoStoreMember vsm = videoStoreMemberRepository.findOne("1");
 		assertNotNull(vsm);
 		assertEquals("keri", vsm.getName());
 		assertNotNull(vsm.getUser());
@@ -82,7 +82,7 @@ public class VideoStoreMemberDAOTest {
 
 	@Test
 	public void testGetVideoStoreMemberByName() {
-		VideoStoreMember vsm = videoStoreMemberRepository.getVideoStoreMemberByName("keri");
+		VideoStoreMember vsm = videoStoreMemberRepository.findByUserUserID("keri");
 		assertNotNull(vsm);
 		assertEquals("keri", vsm.getName());
 		assertNotNull(vsm.getUser());
@@ -95,7 +95,7 @@ public class VideoStoreMemberDAOTest {
 
 	@Test
 	public void testGetVideoStoreMemberByNameReturningNull() {
-		VideoStoreMember vsm = videoStoreMemberRepository.getVideoStoreMemberByName("sssss");
+		VideoStoreMember vsm = videoStoreMemberRepository.findByUserUserID("sssss");
 		assertNull(vsm);
 	}
 

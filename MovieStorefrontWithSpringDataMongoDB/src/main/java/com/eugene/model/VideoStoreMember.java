@@ -26,7 +26,6 @@ public class VideoStoreMember {
 
 	private Account account;
 
-	@DBRef
 	private List<MovieReservation> movieReservations;
 
 	public String getVideoStoreMemberID() {

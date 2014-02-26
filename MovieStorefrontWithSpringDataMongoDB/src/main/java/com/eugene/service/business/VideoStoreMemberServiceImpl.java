@@ -1,5 +1,6 @@
 package com.eugene.service.business;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
@@ -11,11 +12,10 @@ import org.springframework.stereotype.Service;
 
 import com.eugene.model.Account;
 import com.eugene.model.Authorities;
+import com.eugene.model.Movie;
 import com.eugene.model.MovieReservation;
-import com.eugene.model.User;
 import com.eugene.model.VideoStoreMember;
 import com.eugene.service.dao.MovieRepository;
-import com.eugene.service.dao.MovieReservationRepository;
 import com.eugene.service.dao.UserRepository;
 import com.eugene.service.dao.VideoStoreMemberRepository;
 
@@ -26,21 +26,18 @@ public class VideoStoreMemberServiceImpl implements VideoStoreMemberService {
 
 	private MovieRepository movieRepository;
 	private UserRepository userRepository;
-	private MovieReservationRepository movieReservationRepository;
 	private VideoStoreMemberRepository videoStoreMemberRepository;
 	
 	@Autowired
 	public void setUserRepository(UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
+
 	@Autowired
 	public void setVideoStoreMemberRepository(VideoStoreMemberRepository videoStoreMemberRepository) {
 		this.videoStoreMemberRepository = videoStoreMemberRepository;
 	}	
-	@Autowired
-	public void setMovieReservationRepository(MovieReservationRepository movieReservationRepository) {
-		this.movieReservationRepository = movieReservationRepository;
-	}
+
 	@Autowired
 	public void setMovieRepository(MovieRepository movieRepository) {
 		this.movieRepository = movieRepository;
@@ -66,11 +63,19 @@ public class VideoStoreMemberServiceImpl implements VideoStoreMemberService {
 	public boolean reserveMovie(String username, String movieID, boolean rented) {
 		VideoStoreMember vsm = getVideoStoreMember(userRepository.findByUsername(username).getUserID());
 		MovieReservation mr = new MovieReservation();
-		mr.setMemberID(vsm);
 		mr.setRented(rented);
-		mr.setMovie(movieRepository.findByMovieID(movieID));//getMovieByID(movieID));
+		Movie m = movieRepository.findByMovieID(movieID);
+		mr.setMovie(m);
 		mr.setReservationDate(Calendar.getInstance().getTime());
-		movieReservationRepository.save(mr);//storeOrUpdateMovieReservation(mr);
+
+		if (vsm.getMovieReservations() != null) {
+			vsm.getMovieReservations().add(mr);
+		} else {
+			List<MovieReservation> l = new ArrayList<MovieReservation>();
+			l.add(mr);
+			vsm.setMovieReservations(l);
+		}
+		videoStoreMemberRepository.save(vsm);
 		return true;
 	}
 
@@ -94,13 +99,14 @@ public class VideoStoreMemberServiceImpl implements VideoStoreMemberService {
 	}
 
 	public VideoStoreMember getVideoStoreMember(String userID) {
-		return videoStoreMemberRepository.findByUserUserID(userID);
+		VideoStoreMember vsm = videoStoreMemberRepository.findByUserUserID(userID);
+		return vsm;
 	}
 
-	public boolean rentedMovie(VideoStoreMember vsm, String reservationID) {
+	public boolean rentedMovie(VideoStoreMember vsm, String movieID) {
 		List<MovieReservation> l = vsm.getMovieReservations();
 		for (MovieReservation mr : l) {
-			if (mr.getMovieReservationID().equals(reservationID)) {
+			if (mr.getMovie().getMovieID().equals(movieID)) {
 				//Add the cost of the movie to the users account total
 				Account acc = vsm.getAccount();
 				double newTotal = acc.getTotal() + mr.getMovie().getPrice();

@@ -39,14 +39,17 @@ public class MovieServiceImpl implements MovieService {
 	}
 
 	public List<Movie> getMovieListing() {
-		return movieRepository.findAll();//getAllMovies();
+		LOG.debug("Getting all movies");
+		return movieRepository.findAll();
 	}
 	
 	public List<Movie> getMovieListingByGenreID(String genreID) {
+		LOG.debug("Getting all movies by Genre [" + genreID +"]");
 		return movieRepository.findByGenresGenreID(genreID);
 	}
 
 	public Movie getMovieByID(String username, String movieID) {
+		LOG.debug("Getting movie for User [" + username +"]");
 		User u = userRepository.findByUsername(username);
 		VideoStoreMember vsm = videoStoreMemberRepository.findByUserUserID(u.getUserID());
 		Movie movie = movieRepository.findByMovieID(movieID);
