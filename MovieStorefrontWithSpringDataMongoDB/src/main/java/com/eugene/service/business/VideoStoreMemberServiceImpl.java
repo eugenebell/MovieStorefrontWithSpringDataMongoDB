@@ -8,14 +8,15 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 
 import com.eugene.model.Account;
 import com.eugene.model.Authorities;
 import com.eugene.model.MovieReservation;
+import com.eugene.model.User;
 import com.eugene.model.VideoStoreMember;
 import com.eugene.service.dao.MovieRepository;
 import com.eugene.service.dao.MovieReservationRepository;
+import com.eugene.service.dao.UserRepository;
 import com.eugene.service.dao.VideoStoreMemberRepository;
 
 @Service(value="videoStoreMemberService")
@@ -24,9 +25,14 @@ public class VideoStoreMemberServiceImpl implements VideoStoreMemberService {
 	private static final Logger LOG = Logger.getLogger(VideoStoreMemberServiceImpl.class);
 
 	private MovieRepository movieRepository;
+	private UserRepository userRepository;
 	private MovieReservationRepository movieReservationRepository;
 	private VideoStoreMemberRepository videoStoreMemberRepository;
-
+	
+	@Autowired
+	public void setUserRepository(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
 	@Autowired
 	public void setVideoStoreMemberRepository(VideoStoreMemberRepository videoStoreMemberRepository) {
 		this.videoStoreMemberRepository = videoStoreMemberRepository;
@@ -58,7 +64,7 @@ public class VideoStoreMemberServiceImpl implements VideoStoreMemberService {
 	}
 
 	public boolean reserveMovie(String username, String movieID, boolean rented) {
-		VideoStoreMember vsm = getVideoStoreMember(username);
+		VideoStoreMember vsm = getVideoStoreMember(userRepository.findByUsername(username).getUserID());
 		MovieReservation mr = new MovieReservation();
 		mr.setMemberID(vsm);
 		mr.setRented(rented);
@@ -69,7 +75,7 @@ public class VideoStoreMemberServiceImpl implements VideoStoreMemberService {
 	}
 
 	public boolean cancelReservedMovie(String username, String reservationID) {
-		VideoStoreMember vsm = getVideoStoreMember(username);
+		VideoStoreMember vsm = getVideoStoreMember(userRepository.findByUsername(username).getUserID());
 		List<MovieReservation> l = vsm.getMovieReservations();
 		MovieReservation toBeRemoved = null;
 		for (MovieReservation mr : l) {
@@ -87,8 +93,8 @@ public class VideoStoreMemberServiceImpl implements VideoStoreMemberService {
 		return true;
 	}
 
-	public VideoStoreMember getVideoStoreMember(String videoStoreMemberName) {
-		return videoStoreMemberRepository.getVideoStoreMemberByName(videoStoreMemberName);
+	public VideoStoreMember getVideoStoreMember(String userID) {
+		return videoStoreMemberRepository.findByUserUserID(userID);
 	}
 
 	public boolean rentedMovie(VideoStoreMember vsm, String reservationID) {
@@ -112,14 +118,14 @@ public class VideoStoreMemberServiceImpl implements VideoStoreMemberService {
 	}
 
 	public List<MovieReservation> getVideoStoreMembersReservations(String videoStoreMemberID) {
-		return videoStoreMemberRepository.findOne(videoStoreMemberID).getMovieReservations();//getVideoStoreMemberByID(videoStoreMemberID).getMovieReservations();
+		return videoStoreMemberRepository.findOne(videoStoreMemberID).getMovieReservations();
 	}
 
 	public void deleteVideoStoreMember(String videoStoreMemberID) {
-		videoStoreMemberRepository.delete(videoStoreMemberID);//deleteVideoStoreMember(videoStoreMemberID);
+		videoStoreMemberRepository.delete(videoStoreMemberID);
 	}
 
 	public VideoStoreMember getVideoStoreMemberByID(String videoStoreMemberID) {
-		return videoStoreMemberRepository.findOne(videoStoreMemberID);//getVideoStoreMemberByID(videoStoreMemberID);
+		return videoStoreMemberRepository.findOne(videoStoreMemberID);
 	}
 }

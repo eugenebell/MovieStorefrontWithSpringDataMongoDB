@@ -3,6 +3,7 @@ package com.eugene.service.dao;
 import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 
 import com.eugene.model.Movie;
 
@@ -26,6 +27,7 @@ public interface MovieRepository extends MongoRepository<Movie, String> {
 	 * @param genreID
 	 * @return List<Movie>
 	 */
+	@Query("{'genres' : { '$ref' : 'genre', '$id' : { '$oid' : ?0}}}})")
 	List<Movie> findByGenresGenreID(String genreID);
 	
 	/**

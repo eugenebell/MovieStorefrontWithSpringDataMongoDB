@@ -8,26 +8,32 @@ import org.springframework.stereotype.Service;
 
 import com.eugene.model.Movie;
 import com.eugene.model.MovieReservation;
+import com.eugene.model.User;
 import com.eugene.model.VideoStoreMember;
 import com.eugene.service.dao.MovieRepository;
+import com.eugene.service.dao.UserRepository;
 import com.eugene.service.dao.VideoStoreMemberRepository;
 
 @Service
 public class MovieServiceImpl implements MovieService {
 
 	private static final Logger LOG = Logger.getLogger(MovieServiceImpl.class);
-	
-	@Autowired
+
 	private MovieRepository movieRepository;
-	
-	@Autowired
+	private UserRepository userRepository;
 	private VideoStoreMemberRepository videoStoreMemberRepository;
 
+	@Autowired
+	public void setUserRepository(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
 	
+	@Autowired
 	public void setMovieRepository(MovieRepository movieRepository) {
 		this.movieRepository = movieRepository;
 	}
 	
+	@Autowired
 	public void setVideoStoreMemberDAO(VideoStoreMemberRepository videoStoreMemberRepository) {
 		this.videoStoreMemberRepository = videoStoreMemberRepository;
 	}
@@ -37,18 +43,20 @@ public class MovieServiceImpl implements MovieService {
 	}
 	
 	public List<Movie> getMovieListingByGenreID(String genreID) {
-		List<Movie> m = movieRepository.findByGenresGenreID(genreID);
-		return m;
+		return movieRepository.findByGenresGenreID(genreID);
 	}
 
 	public Movie getMovieByID(String username, String movieID) {
-		VideoStoreMember vsm = videoStoreMemberRepository.getVideoStoreMemberByName(username);
+		User u = userRepository.findByUsername(username);
+		VideoStoreMember vsm = videoStoreMemberRepository.findByUserUserID(u.getUserID());
 		Movie movie = movieRepository.findByMovieID(movieID);
 		List<MovieReservation> l = vsm.getMovieReservations();
-		for (MovieReservation movieReservation : l) {
-				if (movieReservation.getMovie().getMovieID().equals(movie.getMovieID())) {
-					movie.setRented(true);
-				}
+		if (l != null) {
+			for (MovieReservation movieReservation : l) {
+					if (movieReservation.getMovie().getMovieID().equals(movie.getMovieID())) {
+						movie.setRented(true);
+					}
+			}
 		}
 		return movie;
 	}

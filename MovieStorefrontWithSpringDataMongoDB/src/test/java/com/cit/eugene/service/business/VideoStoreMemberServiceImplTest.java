@@ -126,7 +126,7 @@ public class VideoStoreMemberServiceImplTest {
 	@Test
 	public void testCancelReservedMovie() {
 		expect(videoStoreMemberRepository.save(vsm)).andReturn(vsm);
-		expect(videoStoreMemberRepository.getVideoStoreMemberByName("bob")).andReturn(vsm);
+		expect(videoStoreMemberRepository.findByUserUserID("bob")).andReturn(vsm);
 		replay(videoStoreMemberRepository);
 		boolean expected = movieManagerImpl.cancelReservedMovie("bob", "1");
 		assertEquals(expected, true);
@@ -135,7 +135,7 @@ public class VideoStoreMemberServiceImplTest {
 
 	@Test
 	public void testGetVideoStoreMember() {
-		expect(videoStoreMemberRepository.getVideoStoreMemberByName("bob")).andReturn(vsm);
+		expect(videoStoreMemberRepository.findByUserUserID("bob")).andReturn(vsm);
 		replay(videoStoreMemberRepository);
 		VideoStoreMember expected = movieManagerImpl.getVideoStoreMember("bob");
 		assertEquals(expected, vsm);
@@ -163,18 +163,18 @@ public class VideoStoreMemberServiceImplTest {
 
 	@Test
 	public void testGetVideoStoreMembersReservations() {
-		expect(videoStoreMemberRepository.findOne(2l)).andReturn(vsm);
+		expect(videoStoreMemberRepository.findOne("2")).andReturn(vsm);
 		replay(videoStoreMemberRepository);
-		List<MovieReservation> expected = movieManagerImpl.getVideoStoreMembersReservations(2l);
+		List<MovieReservation> expected = movieManagerImpl.getVideoStoreMembersReservations("2");
 		assertNotNull(expected);
 		verify(videoStoreMemberRepository);
 	}
 
 	@Test
 	public void testGetVideoStoreMemberByID() {
-		expect(videoStoreMemberRepository.findOne(2l)).andReturn(vsm);
+		expect(videoStoreMemberRepository.findOne("2")).andReturn(vsm);
 		replay(videoStoreMemberRepository);
-		VideoStoreMember expected = movieManagerImpl.getVideoStoreMemberByID(2l);
+		VideoStoreMember expected = movieManagerImpl.getVideoStoreMemberByID("2");
 		assertNotNull(expected);
 		assertEquals("location", expected.getLocation());
 		assertEquals("bob", expected.getName());

@@ -72,9 +72,9 @@
 			
 			<div class="main_menu">
 				<ul id="filters">
-					<c:forEach items="${genres}" var="genre">
-						<li><a onclick="getmoviesForGenre('${genre.genreID}')"
-							href="#" class="${genre.genreName}" title="${genre.genreName}">${genre.genreName}</a></li>
+					<c:forEach items="${genres}" var="genre" varStatus="count">
+						<li><a onclick="getmoviesForGenre('${genre.genreID}')" id="${count.count}" 
+							href="#" class="${genre.genreID}" title="${genre.genreName}">${genre.genreName}</a></li>
 					</c:forEach>
 				</ul>
 			</div>
@@ -86,7 +86,8 @@
 	</div>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			getmoviesForGenre(1);
+			//alert($('#1').attr('class'));
+			getmoviesForGenre($('#1').attr('class'));
 		});
 	</script>
 </body>

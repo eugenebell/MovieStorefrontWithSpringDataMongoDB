@@ -1,6 +1,7 @@
 package com.eugene.service.dao;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 
 import com.eugene.model.VideoStoreMember;
 
@@ -17,6 +18,7 @@ public interface VideoStoreMemberRepository extends MongoRepository<VideoStoreMe
 	 * @param username
 	 * @return VideoStoreMember
 	 */
-	VideoStoreMember getVideoStoreMemberByName(String username);
+	@Query("{'user' : { '$ref' : 'user', '$id' : { '$oid' : ?0}}}})")
+	VideoStoreMember findByUserUserID(String userID);
 
 }
