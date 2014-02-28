@@ -14,6 +14,7 @@ import com.eugene.model.Account;
 import com.eugene.model.Authorities;
 import com.eugene.model.Movie;
 import com.eugene.model.MovieReservation;
+import com.eugene.model.User;
 import com.eugene.model.VideoStoreMember;
 import com.eugene.service.dao.MovieRepository;
 import com.eugene.service.dao.UserRepository;
@@ -48,15 +49,21 @@ public class VideoStoreMemberServiceImpl implements VideoStoreMemberService {
 		// String pwd =
 		// passwordEncoder.encodePassword(videoStoreMember.getUser().getPassword(),
 		// "MySalt");
-		Authorities a = new Authorities();
-		a.setAuthority("ROLE_USER");
-		a.setUsers(videoStoreMember.getUser());
-		Set<Authorities> s = new HashSet<Authorities>();
-		s.add(a);
 		Account account = new Account(0.0);
 		videoStoreMember.setAccount(account);
-		videoStoreMember.getUser().setAuthoritieses(s);
-		videoStoreMember.getUser().setEnabled(true);
+
+		User uUser = new User();
+		Authorities a = new Authorities();
+		a.setAuthority("ROLE_USER");
+		Set<Authorities> aAuthoritieses = new HashSet<Authorities>();
+		aAuthoritieses.add(a);
+		uUser.setAuthoritieses(aAuthoritieses);
+		uUser.setEnabled(true);
+		uUser.setPassword(videoStoreMember.getUser().getPassword());
+		uUser.setUsername(videoStoreMember.getUser().getUsername());
+		uUser = userRepository.save(uUser);
+		
+		videoStoreMember.setUser(uUser);
 		return videoStoreMemberRepository.save(videoStoreMember);
 	}
 
@@ -80,13 +87,13 @@ public class VideoStoreMemberServiceImpl implements VideoStoreMemberService {
 		return true;
 	}
 
-	public boolean cancelReservedMovie(String username, String reservationID) {
+	public boolean cancelReservedMovie(String username, String movieID) {
 		VideoStoreMember vsm = getVideoStoreMember(userRepository.findByUsername(username).getUserID());
 		List<MovieReservation> l = vsm.getMovieReservations();
 		MovieReservation toBeRemoved = null;
 		for (MovieReservation mr : l) {
 			if (!mr.getRented()) {
-				if (mr.getMovie().getMovieID().equals(reservationID)) {
+				if (mr.getMovie().getMovieID().equals(movieID)) {
 					toBeRemoved = mr;
 					break;
 				}
@@ -101,6 +108,16 @@ public class VideoStoreMemberServiceImpl implements VideoStoreMemberService {
 
 	public VideoStoreMember getVideoStoreMember(String userID) {
 		VideoStoreMember vsm = videoStoreMemberRepository.findByUserUserID(userID);
+		List<MovieReservation> l = vsm.getMovieReservations();
+		if (l != null) {
+			List<MovieReservation> nonRented = new ArrayList<MovieReservation>();
+			for (MovieReservation mr : l) {
+				if (!mr.getRented()) {
+					nonRented.add(mr);
+				}
+			}
+			vsm.setMovieReservations(nonRented);
+		}
 		return vsm;
 	}
 

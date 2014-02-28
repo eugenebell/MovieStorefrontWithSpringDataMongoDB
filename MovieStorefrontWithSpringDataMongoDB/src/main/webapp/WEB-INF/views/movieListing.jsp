@@ -86,8 +86,9 @@
 	</div>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			//alert($('#1').attr('class'));
-			getmoviesForGenre($('#1').attr('class'));
+			if (typeof($('#1').attr('class')) != "undefined") {
+				getmoviesForGenre($('#1').attr('class'));
+			}
 		});
 	</script>
 </body>

@@ -18,7 +18,7 @@ function getMovieInfo(movieid) {
 								+ movie.year
 								+ '</p> <p>Run Time: '
 								+ movie.displayRunTime
-								+ '</p><p>Rental Price: £'
+								+ '</p><p>Rental Price: '
 								+ movie.price
 								+ '</p>';
 								if (movie.rented) {									
@@ -116,9 +116,9 @@ function showMovieReservationListing(memberid) {
 									if (movieMemberReservations[i].rented) {
 										row = row + '<img width="48" height="48" src="../images/completed.jpg"/></td>';
 									} else {
-										row = row + '<img onclick="rented('
-										+ memberid + ',' + movieMemberReservations[i].movieReservationID
-										+ ')" width="48" height="48" src="../images/rent.jpg"/></td>';
+										row = row + '<img onclick="rented(\''
+										+ memberid + '\',\'' + movieMemberReservations[i].movie.movieID
+										+ '\')" width="48" height="48" src="../images/rent.jpg"/></td>';
 									}
 									+'</tr>';
 							$('#movieReservationTable').append(row);
@@ -153,9 +153,9 @@ function showMemberListing() {
 							} else {
 								row = '<tr class="even">';
 							}
-							row = row + '<td><span onmouseover="changeCursor(this,\'pointer\');" onmouseout="changeCursor(this,\'default\');" class="link" onclick="showMovieReservationListing('
+							row = row + '<td><span onmouseover="changeCursor(this,\'pointer\');" onmouseout="changeCursor(this,\'default\');" class="link" onclick="showMovieReservationListing(\''
 									+ movieMembers[i].videoStoreMemberID
-									+ ')">'
+									+ '\')">'
 									+ movieMembers[i].name
 									+ '</td><td>'
 									+ movieMembers[i].memebershipNumber

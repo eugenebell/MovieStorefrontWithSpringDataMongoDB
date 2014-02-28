@@ -67,14 +67,14 @@ public class VideoStoreMemberController {
 		videoStoreMemberManager.reserveMovie(aut.getName(), reservationID, false);
 	}
 
-	@RequestMapping(value = "movieListing/cancelReservation/{reservationid}", method = RequestMethod.PUT)
+	@RequestMapping(value = "movieListing/cancelReservation/{movieID}", method = RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void cancelMovie(@PathVariable("reservationid") String reservationID) {
+	public void cancelMovie(@PathVariable("movieID") String movieID) {
 		Authentication aut = SecurityContextHolder.getContext().getAuthentication();
-		videoStoreMemberManager.cancelReservedMovie(aut.getName(), reservationID);
+		videoStoreMemberManager.cancelReservedMovie(aut.getName(), movieID);
 	}
 
-	@RequestMapping(value = "movieListing/reservationRented/{reservationid}/memberid/{movieID}", method = RequestMethod.POST)
+	@RequestMapping(value = "movieListing/reservationRented/{movieID}/memberid/{memeberid}", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void movieRented(@PathVariable("movieID") String movieID, @PathVariable("memeberid") String memberid) {
 		VideoStoreMember vsm = videoStoreMemberManager.getVideoStoreMemberByID(memberid);
