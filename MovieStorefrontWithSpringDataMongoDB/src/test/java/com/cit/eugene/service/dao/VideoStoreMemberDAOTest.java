@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Before;
@@ -82,7 +83,13 @@ public class VideoStoreMemberDAOTest {
 
 	@Test
 	public void testGetVideoStoreMemberByName() {
-		VideoStoreMember vsm = videoStoreMemberRepository.findByUserUserID("keri");
+		List<VideoStoreMember> vsms = videoStoreMemberRepository.findAll();
+		VideoStoreMember vsm = null;
+		for (VideoStoreMember v : vsms) {
+			if (v.getName().equalsIgnoreCase("keri")) {
+				vsm = videoStoreMemberRepository.findByUserUserID(v.getUser().getUserID());
+			}
+		}
 		assertNotNull(vsm);
 		assertEquals("keri", vsm.getName());
 		assertNotNull(vsm.getUser());

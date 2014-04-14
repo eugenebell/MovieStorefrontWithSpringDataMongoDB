@@ -22,11 +22,13 @@ import com.eugene.model.User;
 import com.eugene.model.VideoStoreMember;
 import com.eugene.service.business.VideoStoreMemberServiceImpl;
 import com.eugene.service.dao.MovieRepository;
+import com.eugene.service.dao.UserRepository;
 import com.eugene.service.dao.VideoStoreMemberRepository;
 
 public class VideoStoreMemberServiceImplTest {
 
 	private VideoStoreMemberRepository videoStoreMemberRepository = null;
+	private UserRepository userRepository = null;
 	private MovieRepository movieDAORepository = null;
 	private VideoStoreMemberServiceImpl movieManagerImpl = null;
 	private Movie m = new Movie();
@@ -36,9 +38,11 @@ public class VideoStoreMemberServiceImplTest {
 	public void setUp() throws Exception {
 		videoStoreMemberRepository = createMock(VideoStoreMemberRepository.class);
 		movieDAORepository = createMock(MovieRepository.class);
+		userRepository = createMock(UserRepository.class);;
 		movieManagerImpl = new VideoStoreMemberServiceImpl();
 		movieManagerImpl.setMovieRepository(movieDAORepository);	
 		movieManagerImpl.setVideoStoreMemberRepository(videoStoreMemberRepository);
+		movieManagerImpl.setUserRepository(userRepository);
 		m.setMovieID("1");
 		m.setActorsDisplay("actorsDisplay");
 		m.setDirectorsDisplay("directorsDisplay");
@@ -75,6 +79,7 @@ public class VideoStoreMemberServiceImplTest {
 	public void testSetVideoStoreMemberRepository() {
 		assertNotNull(videoStoreMemberRepository);
 		assertNotNull(movieDAORepository);
+		assertNotNull(userRepository);
 	}
 
 	@Test
@@ -99,31 +104,17 @@ public class VideoStoreMemberServiceImplTest {
 		verify(videoStoreMemberRepository);
 	}
 
-//	@Test
-//	public void testReserveMovie() {
-//		MovieReservation mr = new MovieReservation();
-//		mr.setMemberID(vsm);
-//		Movie m = new Movie();
-//		m.setMovieID(1l);
-//		mr.setMovie(m);
-//		mr.setRented(false);
-//		mr.setReservationDate(new Date());
-//		//expect(videoStoreMemberRepository.getVideoStoreMemberByName("bob")).andReturn(vsm);
-//		expect(movieReservationRepository.storeOrUpdateMovieReservation(mr)).andReturn(mr);
-//		//replay(videoStoreMemberRepository);
-//		replay(movieReservationRepository);
-//		movieManagerImpl.reserveMovie("bob", 1l, false);
-//		//assertEquals(expected, true);
-//		verify(movieReservationRepository);
-//	}
-
 	@Test
 	public void testCancelReservedMovie() {
-		expect(videoStoreMemberRepository.save(vsm)).andReturn(vsm);
+		expect(userRepository.findByUsername("bob")).andReturn(new User());
 		expect(videoStoreMemberRepository.findByUserUserID("bob")).andReturn(vsm);
+		expect(videoStoreMemberRepository.save(vsm)).andReturn(vsm);
+		
+		replay(userRepository);
 		replay(videoStoreMemberRepository);
 		boolean expected = movieManagerImpl.cancelReservedMovie("bob", "1");
 		assertEquals(expected, true);
+		verify(userRepository);
 		verify(videoStoreMemberRepository);
 	}
 
@@ -138,7 +129,9 @@ public class VideoStoreMemberServiceImplTest {
 
 	@Test
 	public void testRentedMovie() {
+		expect(userRepository.findByUsername("bob")).andReturn(new User());
 		expect(videoStoreMemberRepository.save(vsm)).andReturn(vsm);
+		replay(userRepository);
 		replay(videoStoreMemberRepository);
 		boolean expected = movieManagerImpl.rentedMovie(vsm, "1");
 		assertEquals(expected, true);
