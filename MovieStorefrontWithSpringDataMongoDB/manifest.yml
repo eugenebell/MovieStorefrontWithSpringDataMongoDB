@@ -1,0 +1,10 @@
+applications:
+- name: spring-movie
+  memory: 512M
+  instances: 1
+  host: spring-music102
+  domain: mybluemix.net
+  #cfapps.io
+  path: target/MovieStoreFront-0.0.4.war
+  #services:
+  #  - movieMongo

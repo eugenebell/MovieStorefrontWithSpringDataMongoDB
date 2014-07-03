@@ -1,89 +1,44 @@
 package com.eugene.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 
 @Configuration
-@PropertySource("classpath:/com/eugene/configuration/mongodb.properties")
+@Profile("default")
+@PropertySource("classpath:mongodb.properties")
 @EnableMongoRepositories("com.eugene.service.dao")
 @EnableTransactionManagement
-@Import({ApplicationConfig.class, SecurityApplicationConfig.class})
-public class DataApplicationConfig extends AbstractMongoConfiguration {
+@Import({ ApplicationConfig.class, SecurityApplicationConfig.class })
+public class DataApplicationConfig {// extends AbstractMongoConfiguration {
 
-    private Environment environment;
-    
-	@Autowired	
+	private Environment environment;
+
+	@Autowired
 	public void setEnvironment(Environment environment) {
 		this.environment = environment;
 	}
 
-//	@Bean
-//	public DataSource dataSource() {
-//		DriverManagerDataSource ds = new DriverManagerDataSource();
-//		ds.setDriverClassName(environment.getProperty("datasource.driverClassName"));
-//		ds.setUrl(environment.getProperty("datasource.url"));
-//		ds.setUsername(environment.getProperty("datasource.username"));
-//		ds.setPassword(environment.getProperty("datasource.password"));
-//		return ds;
-//	}
-	
-//	@Bean
-//    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-//		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
-//        factory.setJpaVendorAdapter(jpaVendorAdapter());
-//        factory.setDataSource(dataSource());
-//        factory.setPersistenceUnitName("video-unit");
-//       return factory;
-//    }
-
-//    @Bean
-//    public JpaVendorAdapter jpaVendorAdapter() {
-//    	HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-//        vendorAdapter.setGenerateDdl(Boolean.FALSE);
-//        vendorAdapter.setShowSql(Boolean.TRUE);
-//        vendorAdapter.setDatabase(Database.MYSQL);
-//        return vendorAdapter;
-//    }
-
-	@Override
-	protected String getDatabaseName() {
-		return environment.getProperty("mongodb.db");
+	@Bean
+	public MongoTemplate mongoTemplate() throws Exception {
+		return new MongoTemplate(mongo(), environment.getProperty("mongodb.db"));
 	}
 
-	@Override
+	@Bean
 	public Mongo mongo() throws Exception {
-		return new MongoClient(environment.getProperty("mongodb.host"), Integer.valueOf(environment.getProperty("mongodb.port")));
+		MongoClientURI mci = new MongoClientURI(environment.getProperty("mongodb.url"));
+		return new MongoClient(mci);
 	}
 
-
-//    @Value("classpath:mysql-schema.sql")
-//    private Resource schemaScript;
-//
-//    @Value("classpath:sample-setup-data.sql")
-//    private Resource dataScript;
-
-//    @Bean
-//    public DataSourceInitializer dataSourceInitializer(final DataSource dataSource) {
-//        final DataSourceInitializer initializer = new DataSourceInitializer();
-//        initializer.setDataSource(dataSource);
-//        initializer.setDatabasePopulator(databasePopulator());
-//        return initializer;
-//    }
-
-//    private DatabasePopulator databasePopulator() {
-//        final ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
-//        populator.addScript(schemaScript);
-//        populator.addScript(dataScript);
-//        return populator;
-//    }
-    
 }
